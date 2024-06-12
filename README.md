@@ -1,16 +1,66 @@
 # VisQUIC
-By: Robert Shahla and Barak Gahtan
+By: Robert Shahla and Barak Gahtan.
 
-This repository contains the code used to create the VisQUIC dataset. The dataset is used to train a machine learning model to classify QUIC traffic. The dataset includes traces of QUIC traffic captured from different webpages in PCAP format, as well as images that represent the traffic in a visual way. The dataset is created in three major steps:
+This repository contains the code used to create the VisQUIC dataset. The dataset is used to train a machine learning model to classify QUIC traffic. The dataset includes traces of QUIC traffic captured from different webpages in `PCAP` format, as well as images that represent the traffic in a visual way. The dataset is created in three major steps:
 1) Create the traces by issuing requests to webpages and capturing the traffic.
 2) Convert the pcap files to csv files that contain only the QUIC traffic.
 3) Prepare the images dataset, i.e. create the `png` files from the csv files.
 
+## Dataset Description
+The full dataset is available [here](https://www.dropbox.com/scl/fo/8qg9rnw8r9h5wyv0kihhk/AFC0c0jwM5zZHqc6tym3spA?rlkey=73z8ln52k0d6o9ckn8810erxl&e=1&dl=0).
+
+The dataset contains images and PCAP traces of QUIC traffic, all of which in `zip` files.
+The images have the prefix `rgb_images` and the traces have the prefix `VisQUIC`. 
+
+Each `zip` file of the `rgb_images` contains a folder with the following hierarchy:
+```
+<zip_file_name>
+│
+└───<server_name>
+    │
+    └───<website_name>
+        │
+        └───<trace_number>
+            │
+            └───<window_size>
+                │
+                └───<overlap>
+                    │
+                    └───<label>
+                        │
+                        └───<image1>
+                        │
+                        └───<image2>
+                        │
+                        └───...
+```
+
+Each `zip` file of the `VisQUIC` contains a folder with the following hierarchy:
+```
+<zip_file_name>
+│
+└───<server_name>
+    │
+    └───<website_name>
+        │
+        └───<pcap_file1>
+        │
+        └───<key_file1>
+        │
+        └───<pcap_file2>
+        │
+        └───<key_file2>
+        │
+        └───...
+```
+
+For each `PCAP` file there is a corresponding `key` file that is used to decrypt the traffic. The key file is named the same as the `PCAP` file but with the extension `.key`. The key file is used to decrypt the traffic using the `tshark` command, or with `Wirshark` by specifying the key file in the `TLS` settings.
+We note that not all traces can be decrypted, as some of the traces are encrypted with a different key that is not provided in the dataset.
+The links to the webpages used to create the dataset are available in the `links-for-request` folder.
 
 ## Requirements
 The following was tested on Ubuntu 22.04.1 LTS.
 
-1) Around 100 - 150 GB of free space.
 1) Python 3.7 or higher.
 2) wget:
 ```bash
@@ -18,7 +68,7 @@ apt update && apt upgrade
 apt install wget
 ```
 
-3) Google Chrome. The version used to create this dataset is 114.0.5735.198. To download the current version: # TODO: check this
+3) Google Chrome. The version used to create this dataset is 119.0.6046.159. To download the current version as an example:
 ```bash
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo apt install ./google-chrome-stable_current_amd64.deb
@@ -40,7 +90,7 @@ pip3 install bs4
 ## Usage
 Clone the repo:
 ```
-git clone git@github.com:robshahla/quic-classification.git  TODO: change this.
+git clone git@github.com:robshahla/VisQUIC.git
 ```
 
 ### Creating the dataset
@@ -50,26 +100,19 @@ git clone git@github.com:robshahla/quic-classification.git  TODO: change this.
 alias chrome="google-chrome"
 ```
 
-2) Set the `SSLKEYLOGFILE` environment variable to the path of the file where the SSL keys will be saved. This is needed to decrypt the QUIC traffic. Run the following: # TODO: check this, i think it is not needed.
-```
-export SSLKEYLOGFILE=<ssl_key_file_path>.log
-```
-
-3) Create the traces by issuing requests to webpages. The requests are issued
+2) Create the traces by issuing requests to webpages. The requests are issued
 one at a time:
 ```
 python3 create_trace.py --links_folder=<folder_path_containing_links> --output_folder=<path_to_output_folder> --requests_per_webpage=<number_of_requests> --starting_index=<index>
 ```
 Where `--links_folder` is the path to the folder containing the links to the webpages to be used in the experiment. The folder is expected to contain subfolders of servers, and in each subfolder a file named `links.txt` which contains the links for different webpages, each link in a row.
-`--output_folder` is the path to the folder where the traces will be saved. The output folder will contain subfolders for each server, and in each subfolder there will be a folder for each webpage, and in each webpage folder there will be a folder for each request. Each request folder will contain the pcap file, the HTML file, and the NetLog file and log. Note that currently only a directory under the current (`.`) directory can be used as the output folder. #TODO: Check or change this.
+`--output_folder` is the path to the folder where the traces will be saved. The output folder will contain subfolders for each server, and in each subfolder there will be a folder for each webpage, and in each webpage folder there will be a folder for each request. Each request folder will contain the pcap file, the HTML file, the NetLog file, log, and the key file. The key file is used to decrypt the traffic. 
 `--requests_per_webpage` is the number of requests to be sent to each webpage, sequentially.
 `--starting_index` is a number to add as a prefix to the trace number. This is useful when running the script multiple times to create multiple datasets. The default value is 0.  
 Usage example:
 ```
 python3 create_trace.py --links_folder=links-for-request --output_folder=data2 --requests_per_webpage=100 --starting_index=0002
 ```
-
-#TODO: maybe add info about the links-for-request folder.
 
 ### Preparing the dataset
 1) Convert the pcap files to csv files that contain only the QUIC traffic, so that they can be used in the `prepare.py` script. Usage:
@@ -91,17 +134,11 @@ Where `--save_path` is the path to the folder where the `png` files will be save
 ```
 python3 prepare.py --save_path ./windows_data --files file1.csv file2.csv
 ```
-You can also run the script `create_miniflowpics.sh` which will create the mini-flowpics dataset. Note that the script will run multiple processes in parallel, and it process all the csv files in the directory specified inside the script.  
+You can also run the script `create_miniflowpics.sh` which will create the mini-flowpics dataset. Note that the script will run `100` processes in parallel, and it process all the csv files in the directory specified inside the script.
 To run the script:
 ```
 ./create_miniflowpics.sh
 ```
-
-### Running the model
-
-### Other Useful Scripts
-
-
 
 ## Contribution
 This repository is part of a research project. It is managed Robert Shahla and Barak Gahtan. #TODO: Write more here on how to contribute.

@@ -147,7 +147,7 @@ def issue_request(websites, website_path, request_id: int, url: str, starting_in
     # request = "chrome " \
     # request = "chromium --no-sandbox " \
             #   "--headless " \
-    request = f"SSLKEYLOGFILE={filename}.key /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome " \
+    request = f"SSLKEYLOGFILE={filename}.key chrome " \
               "--autoplay-policy=no-user-gesture-required " \
               "--dump-dom " \
               "--disable-gpu " \
