@@ -58,6 +58,11 @@ For each `PCAP` file there is a corresponding `key` file that is used to decrypt
 We note that not all traces can be decrypted, as some of the traces are encrypted with a different key that is not provided in the dataset.
 The links to the webpages used to create the dataset are available in the `links-for-request` folder.
 
+A sample of the dataset is provided in this repository under the `dataset-samples` folder. The sample contains a small subset of the full dataset, and is used to demonstrate the structure of the dataset. The sample is taken from the `rgb_images1.zip` and `VisQUIC1.zip` files.
+- `VisQUIC1` is the folder containing the images. It contains two subfolders for two web servers, each web server folder contains a subfolder for two webpages, and each webpage folder contains the traces (`PCAP` files) and their keys (`key` files) which are used to decrypt the traffic.
+- `v5_windows_32_new` is the folder containing the corresponding images for the traces in `VisQUIC1`. It contains two subfolders for two web servers, each web server folder contains a subfolder for two webpages, and each webpage folder contains a subfolder for each trace. The hierarchy continues as described above.
+
+
 ## Requirements
 The following was tested on Ubuntu 22.04.1 LTS.
 
@@ -105,10 +110,12 @@ one at a time:
 ```
 python3 create_trace.py --links_folder=<folder_path_containing_links> --output_folder=<path_to_output_folder> --requests_per_webpage=<number_of_requests> --starting_index=<index>
 ```
-Where `--links_folder` is the path to the folder containing the links to the webpages to be used in the experiment. The folder is expected to contain subfolders of servers, and in each subfolder a file named `links.txt` which contains the links for different webpages, each link in a row.
-`--output_folder` is the path to the folder where the traces will be saved. The output folder will contain subfolders for each server, and in each subfolder there will be a folder for each webpage, and in each webpage folder there will be a folder for each request. Each request folder will contain the pcap file, the HTML file, the NetLog file, log, and the key file. The key file is used to decrypt the traffic. 
-`--requests_per_webpage` is the number of requests to be sent to each webpage, sequentially.
-`--starting_index` is a number to add as a prefix to the trace number. This is useful when running the script multiple times to create multiple datasets. The default value is 0.  
+The parameters are as follows:
+- `--links_folder` is the path to the folder containing the links to the webpages to be used in the experiment. The folder is expected to contain subfolders of servers, and in each subfolder a file named `links.txt` which contains the links for different webpages, each link in a row.
+- `--output_folder` is the path to the folder where the traces will be saved. The output folder will contain subfolders for each server, and in each subfolder there will be a folder for each webpage, and in each webpage folder there will be a folder for each request. Each request folder will contain the pcap file, the HTML file, the NetLog file, log, and the key file. The key file is used to decrypt the traffic. 
+- `--requests_per_webpage` is the number of requests to be sent to each webpage, sequentially.
+- `--starting_index` is a number to add as a prefix to the trace number. This is useful when running the script multiple times to create multiple datasets. The default value is 0.  
+
 Usage example:
 ```
 python3 create_trace.py --links_folder=links-for-request --output_folder=data2 --requests_per_webpage=100 --starting_index=0002
