@@ -55,7 +55,14 @@ Each `zip` file of the `VisQUIC` contains a folder with the following hierarchy:
 ```
 
 For each `PCAP` file there is a corresponding `key` file that is used to decrypt the traffic. The key file is named the same as the `PCAP` file but with the extension `.key`. The key file is used to decrypt the traffic using the `tshark` command, or with `Wirshark` by specifying the key file in the `TLS` settings.
-We note that not all traces can be decrypted, as some of the traces are encrypted with a different key that is not provided in the dataset.
+We note that not all traces can be decrypted, as some of the traces are encrypted with a different key that is not 
+provided in the dataset.
+
+The reason for storing the connection keys is as follows:
+During a QUIC connection, the client and server use multiple keys for encrypting their packets, such as Handshake keys and Application Data keys [RFC 9001](https://datatracker.ietf.org/doc/html/rfc9001). The keys are used to encrypt a packet’s payload and a large portion of the packet’s header. An observer that observers the traffic, will not be able to read the encrypted parts of the packets, and since we capture the traffic using Tshark from an observer point of view, we need to store the connection keys (SSL keys) from the client side in order to later use them to decrypt the captured traffic by the observer.
+
+## Sample Data
+
 The links to the webpages used to create the dataset are available in the `links-for-request` folder.
 
 A sample of the dataset is provided in this repository under the `dataset-samples` folder. The sample contains a small subset of the full dataset, and is used to demonstrate the structure of the dataset. The sample is taken from the `rgb_images1.zip` and `VisQUIC1.zip` files.
