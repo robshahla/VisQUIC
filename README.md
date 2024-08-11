@@ -62,6 +62,7 @@ A sample of the dataset is provided in this repository under the `dataset-sample
 - `VisQUIC1` is the folder containing the images. It contains two subfolders for two web servers, each web server folder contains a subfolder for two webpages, and each webpage folder contains the traces (`PCAP` files) and their keys (`key` files) which are used to decrypt the traffic.
 - `v5_windows_32_new` is the folder containing the corresponding images for the traces in `VisQUIC1`. It contains two subfolders for two web servers, each web server folder contains a subfolder for two webpages, and each webpage folder contains a subfolder for each trace. The hierarchy continues as described above.
 
+The webpage links that were used to create the dataset are available in the file `links-for-request/all_websites.txt`. The file contains 9,075 links to different webpages.
 
 ## Requirements
 The following was tested on Ubuntu 22.04.1 LTS.
