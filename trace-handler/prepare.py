@@ -232,8 +232,6 @@ def window_data_to_multi_hist(data, time_bins, length_bins, window_size, trace =
                 relevant_time & server_relevant_length)  # red for packets from the server to the client (generally the video data)
             hist[y][x][1] = np.sum(
                 relevant_time & client_relevant_length)  # green for packets from the client to the server (generally ACK messages)
-            hist[y][x][2] = np.sum(
-                aggregated_relevant_time & aggregated_relevant_length)  # blue for the aggregated number of packet from both directions, over the whole trace.
 
     return hist
 
