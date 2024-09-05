@@ -7,7 +7,8 @@ import sys
 import signal
 import time
 import argparse
-
+# INTERFACE = 'eth0'
+INTERFACE = 'ens160'
 # from bs4 import BeautifulSoup
 
 logging.basicConfig(stream=sys.stdout, level=0)
@@ -169,7 +170,7 @@ def issue_request(websites, website_path, request_id: int, url: str, starting_in
     # Start tshark
     logger.info("Starting tshark")
     # tshark_process = run_tshark('ens160', f'{pcap_file}')
-    tshark_process = run_tshark('eth0', f'{pcap_file}')
+    tshark_process = run_tshark(INTERFACE, f'{pcap_file}')
 
     logger.info("sleeping for 1 second")
     time.sleep(5)
