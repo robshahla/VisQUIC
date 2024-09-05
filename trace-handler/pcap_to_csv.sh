@@ -11,7 +11,7 @@
 #     done
 # done
 # 59
-for FOLDER in `find /Volumes/ELEMENTS/quic-classification/v4_data65/ -mindepth 1 -maxdepth 1 -type d`
+for FOLDER in `find /mnt/sdc/trace-collector/VisQUIC/v5_data8/ -mindepth 1 -maxdepth 1 -type d`
 do
     echo $FOLDER
     find $FOLDER -type f -name "*.pcap" | paste -sd " " - | xargs -n5000 -P1 python3 pcap_to_csv.py

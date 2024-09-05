@@ -8,7 +8,7 @@ import signal
 import time
 import argparse
 
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 
 logging.basicConfig(stream=sys.stdout, level=0)
 logger = logging.getLogger(__name__)
@@ -123,7 +123,7 @@ def kill_tshark(process):
     """
     os.killpg(os.getpgid(process.pid), signal.SIGTERM)
     time.sleep(3)
-    subprocess.run('pkill -15 -f tshark', shell=True, executable='/bin/zsh')
+    subprocess.run('pkill -15 -f tshark', shell=True, executable='/bin/bash')
     # subprocess.run('pkill -15 -f tshark', shell=True, executable='/bin/bash')
 
 
@@ -147,7 +147,8 @@ def issue_request(websites, website_path, request_id: int, url: str, starting_in
     # request = "chrome " \
     # request = "chromium --no-sandbox " \
             #   "--headless " \
-    request = f"SSLKEYLOGFILE={filename}.key chrome " \
+    request = f"SSLKEYLOGFILE={filename}.key google-chrome --no-sandbox " \
+              "--headless " \
               "--autoplay-policy=no-user-gesture-required " \
               "--dump-dom " \
               "--disable-gpu " \
@@ -163,11 +164,12 @@ def issue_request(websites, website_path, request_id: int, url: str, starting_in
               f"2> /dev/null"
 
     # create sslkeylogfile at the ~ directory, and the name of the file is filename.key with 777 permissions
-    subprocess.run(f'touch {filename}.key', shell=True, executable='/bin/zsh', )
+    subprocess.run(f'touch {filename}.key', shell=True, executable='/bin/bash', )
 
     # Start tshark
     logger.info("Starting tshark")
-    tshark_process = run_tshark('en0', f'{pcap_file}')
+    # tshark_process = run_tshark('ens160', f'{pcap_file}')
+    tshark_process = run_tshark('eth0', f'{pcap_file}')
 
     logger.info("sleeping for 1 second")
     time.sleep(5)
@@ -175,7 +177,7 @@ def issue_request(websites, website_path, request_id: int, url: str, starting_in
     logger.info('Running request: {}'.format(request))
     try:
         print("path of json file: ", json_file)
-        p = subprocess.run(request, shell=True, executable='/bin/zsh', timeout=1200)
+        p = subprocess.run(request, shell=True, executable='/bin/bash', timeout=1200)
 
     except subprocess.TimeoutExpired:
         logger.info("Timeout expired")

@@ -22,12 +22,12 @@
 #     # rm -rf v3_data/*
 # done
 
-for WEBSITE in temp.com
+for WEBSITE in youtube.com adobe.com bleacherreport.com cdnetworks.com cloudflare.com cnn.com discord.com facebook.com google.com independent.co.uk instagram.com jetbrains.com logitech.com mercedes-benz.com nicelocal.com pcmag.com pinterest.com semrush.com wiggle.com
 do
     # python3 create_trace.py --links_folder=output_links --websites $WEBSITE --output_folder=./v4_data --requests_per_webpage=1 --starting_index=0004
     
     # python3 create_trace.py --links_folder=output_links_new --websites $WEBSITE --output_folder=/Volumes/ELEMENTS/quic-classification/temp --requests_per_webpage=1 --starting_index=0089
-    python3 create_trace.py --links_folder=output_links_new --websites $WEBSITE --output_folder=/Users/shahlarobert/Documents/masters/reuven-cohen/quic-classification/temp --requests_per_webpage=1 --starting_index=0089
+    python3 create_trace.py --links_folder=../links-for-request --websites $WEBSITE --output_folder=/mnt/sdc/trace-collector/VisQUIC/v5_data8 --requests_per_webpage=1 --starting_index=0090
 
     # ./pcap_to_csv.sh
     # sshpass -p '' scp -r v3_data/* barakg@132.68.39.111:/home/barakg/deepquic/quic-classification/v3_data  #TODO: remove this before the commit
