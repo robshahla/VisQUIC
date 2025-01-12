@@ -7,9 +7,7 @@ This repository contains the code used to create the VisQUIC dataset. The datase
 3) Prepare the images dataset, i.e. create the `png` files from the csv files.
 
 ## Dataset Description
-The full dataset is available [here](https://www.dropbox.com/scl/fo/8qg9rnw8r9h5wyv0kihhk/AFC0c0jwM5zZHqc6tym3spA?rlkey=ggqq7w71dk8h8zp4mgbviirb7&st=bho6tmv0&dl=0).
-
-[and here](https://www.dropbox.com/scl/fo/8qg9rnw8r9h5wyv0kihhk/AFC0c0jwM5zZHqc6tym3spA?rlkey=q9i0rs2equxdgpchpr5del2ji&st=fq5l0ke8&dl=0) 
+The full dataset is available [here](https://www.dropbox.com/scl/fo/8qg9rnw8r9h5wyv0kihhk/AFC0c0jwM5zZHqc6tym3spA?rlkey=ggqq7w71dk8h8zp4mgbviirb7&st=bho6tmv0&dl=0) [and here](https://www.dropbox.com/scl/fo/8qg9rnw8r9h5wyv0kihhk/AFC0c0jwM5zZHqc6tym3spA?rlkey=q9i0rs2equxdgpchpr5del2ji&st=fq5l0ke8&dl=0).
 The dataset contains images and PCAP traces of QUIC traffic, all of which in `zip` files.
 The images have the prefix `rgb_images` and the traces have the prefix `VisQUIC`. 
 
